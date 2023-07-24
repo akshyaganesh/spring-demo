@@ -25,25 +25,7 @@ pipeline{
                 }
             }
          }
-        stage('Build docker image'){
-            steps{
-                script{
-                    sh 'docker build -t hello-world .'
-                }
-            }
-        }
-        stage('Push image to Hub'){
-            steps{
-                script{
-                   withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                   sh 'docker login -u akshyaganesh -p ${dockerhubpwd}'
 
-                    }
-                   //sh 'docker push akshyaganesh/hello-world'
-                    sh 'docker push hello-world'
-                }
-            }
-         }
         
             
         

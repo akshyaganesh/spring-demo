@@ -17,8 +17,7 @@
 	<properties>
 		<java.version>11</java.version>
 	</properties>
-	 <source>11</source> 
-    <target>11</target> 
+
 	<dependencies>
 
 		<dependency>

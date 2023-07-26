@@ -10,7 +10,7 @@ pipeline{
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/akshyaganesh/spring-demo.git']])
             }
          } 
-         /*      
+          
        stage('Build'){
             steps{
                 sh 'mvn clean package'
@@ -26,7 +26,7 @@ pipeline{
                 }
             }
          }
-         */
+        
         stage('Build docker image'){
             steps{
                 script{

@@ -16,6 +16,7 @@ pipeline{
                 sh 'mvn clean package'
             }
          }
+         /*
         stage('SonarQube analysis') {
             //    def scannerHome = tool 'SonarScanner 4.0';
             steps{
@@ -26,7 +27,7 @@ pipeline{
                 }
             }
          }
-        
+        */
         stage('Build docker image'){
             steps{
                 script{

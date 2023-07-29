@@ -36,7 +36,7 @@ pipeline{
                 }
             }
         }
-        /*
+        
         stage('Push image to Hub'){
             steps{
                 script{
@@ -48,7 +48,7 @@ pipeline{
                    //sh 'docker push akshyaganesh/hello-world'
                     sh 'docker push hello-world'
                 }
-                */
+                
             }
          }
         

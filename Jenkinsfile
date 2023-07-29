@@ -31,7 +31,7 @@ pipeline{
         stage('Build docker image'){
             steps{
                 script{
-                    
+                    sh 'chmod 666 /var/run/docker.sock'
                     sh 'docker build -t hello-world .'
                 }
             }

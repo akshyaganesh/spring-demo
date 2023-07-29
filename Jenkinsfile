@@ -46,7 +46,7 @@ pipeline{
 
                     }
                    //sh 'docker push akshyaganesh/hello-world'
-                    sh 'docker push akshyaganesh/hello-world:maven-build'
+                    sh 'docker push hello-world'
                 }
                 
             }

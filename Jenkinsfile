@@ -11,7 +11,7 @@ pipeline{
             }
          } 
 
-      
+        /*
         stage('SonarQube analysis') {
             //    def scannerHome = tool 'SonarScanner 4.0';
             steps{
@@ -23,7 +23,7 @@ pipeline{
                 }
             }
          }
-        
+        */
        stage('Build'){
             steps{
                 sh 'mvn clean package'
@@ -47,7 +47,8 @@ pipeline{
 
                     }
                    //sh 'docker push akshyaganesh/hello-world'
-                    sh 'docker push hello-world'
+                    //sh 'docker push hello-world'
+                    sh 'docker push akshyaganesh/hello-world:hello-world'
                 }
                 
             }

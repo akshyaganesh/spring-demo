@@ -48,7 +48,7 @@ pipeline{
                     }
                    //sh 'docker push akshyaganesh/hello-world'
                     //sh 'docker push hello-world'
-                    sh 'docker push akshyaganesh/hello-world:hello-world'
+                    sh 'docker push hello-world'
                 }
                 
             }

@@ -48,7 +48,8 @@ pipeline{
                     }
                    //sh 'docker push akshyaganesh/hello-world'
                     //sh 'docker push hello-world'
-                    sh 'docker push hello-world'
+                    sh 'docker tag akshyaganesh/helloworld:latest docker.io/akshyaganesh/hello-world:latest'
+                    sh 'docker push docker.io/akshyaganesh/hello-world:latest'
                 }
                 
             }

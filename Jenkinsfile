@@ -11,13 +11,13 @@ pipeline{
             }
          } 
 
-       /*   
+          
        stage('Build'){
             steps{
                 sh 'mvn clean package'
             }
          }
-         */
+          
         stage('SonarQube analysis') {
             //    def scannerHome = tool 'SonarScanner 4.0';
             steps{
@@ -25,11 +25,16 @@ pipeline{
                 //withSonarQubeEnv(credentialsId: 'sonar-token') {
                 // If you have configured more than one global server connection, you can specify its name
                 //      sh "${scannerHome}/bin/sonar-scanner"
-                sh "mvn clean package sonar:sonar"
+                sh "mvn sonar:sonar"
                 }
             }
          }
         
+       stage('Build'){
+            steps{
+                sh 'mvn clean package'
+            }
+         }
         stage('Build docker image'){
             steps{
                 script{

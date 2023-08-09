@@ -11,24 +11,26 @@ pipeline{
             }
          } 
 
-        /*
+       
         stage('SonarQube analysis') {
             //    def scannerHome = tool 'SonarScanner 4.0';
             steps{
-                withSonarQubeEnv('sonarqube-8.0') { 
-                //withSonarQubeEnv(credentialsId: 'sonar-token') {
+
+                //  withSonarQubeEnv('sonarqube-8.0') { 
+                withSonarQubeEnv(credentialsId: 'sonar-token1') {
                 // If you have configured more than one global server connection, you can specify its name
                 //      sh "${scannerHome}/bin/sonar-scanner"
-                sh "mvn sonar:sonar"
+                sh 'mvn sonar:sonar'
                 }
             }
          }
-        */
+       
        stage('Build'){
             steps{
                 sh 'mvn clean package'
             }
          }
+         /*
         stage('Build docker image'){
             steps{
                 script{
@@ -53,6 +55,7 @@ pipeline{
                 }
                 
             }
+            */
             
          }
        

@@ -16,8 +16,8 @@ pipeline{
             //    def scannerHome = tool 'SonarScanner 4.0';
             steps{
 
-                //withSonarQubeEnv('sonarqube-scanner') { 
-                withSonarQubeEnv(credentialsId: 'sonar-token') {
+                withSonarQubeEnv('sonarqube-scanner') { 
+                //withSonarQubeEnv(credentialsId: 'sonar-token') {
                 // If you have configured more than one global server connection, you can specify its name
                 //      sh "${scannerHome}/bin/sonar-scanner"
                 sh 'mvn clean package sonar:sonar'

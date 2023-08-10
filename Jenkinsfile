@@ -20,7 +20,7 @@ pipeline{
                 //withSonarQubeEnv(credentialsId: 'sonar-token') {
                 // If you have configured more than one global server connection, you can specify its name
                 //      sh "${scannerHome}/bin/sonar-scanner"
-                sh 'mvn clean package sonar:sonar'
+                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                 }
             }
          }

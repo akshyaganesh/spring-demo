@@ -57,7 +57,7 @@ pipeline{
             }
             */
         stage("SSH Into k8s Server") {
-                node {
+                steps {
                     def remote = [:]
                     remote.name = 'k8s'
                     remote.host = 'kubemaster1'

@@ -2,12 +2,6 @@ pipeline{
     agent any
     environment {
         PATH = "$PATH:/opt/apache-maven-4.0.0-alpha-7/bin"
-        def remote = [:]
-        remote.name = 'kubemaster1'
-        remote.host = '192.168.1.20'
-        remote.user = 'root'
-        remote.password = 'redhat'
-        remote.allowAnyHosts = true
    
         }
     stages{

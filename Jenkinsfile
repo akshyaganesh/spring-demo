@@ -2,8 +2,7 @@ pipeline{
     agent any
     environment {
         PATH = "$PATH:/opt/apache-maven-4.0.0-alpha-7/bin"
-    }
-    environment {
+
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "192.168.1.27:8081"

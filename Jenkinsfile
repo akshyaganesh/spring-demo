@@ -74,11 +74,8 @@ pipeline{
                     script('Deploy spring boot') {
                         sshCommand remote: remote, command: "kubectl apply -f deployment.yaml"
                         }
-                    }
-         
-                }
-        
-        
+            }
+
            
     }
        

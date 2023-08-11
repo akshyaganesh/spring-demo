@@ -2,6 +2,12 @@ pipeline{
     agent any
     environment {
         PATH = "$PATH:/opt/apache-maven-4.0.0-alpha-7/bin"
+        def remote = [:]
+        remote.name = 'kubemaster1'
+        remote.host = '192.168.1.20'
+        remote.user = 'root'
+        remote.password = 'redhat'
+        remote.allowAnyHosts = true
    
         }
     stages{
@@ -57,20 +63,29 @@ pipeline{
             }
             */
         stage("SSH Into k8s Server") {
-                def remote = [:]
-                remote.name = 'kubemaster1'
-                remote.host = '192.168.1.20'
-                remote.user = 'root'
-                remote.password = 'redhat'
-                remote.allowAnyHosts = true
+                node {
+                    def remote = [:]
+                    remote.name = 'k8s'
+                    remote.host = 'kubemaster1'
+                    remote.user = 'root'
+                    remote.password = 'redhat'
+                    remote.allowAnyHosts = true
+                    stage('Remote SSH') {
+                        sshCommand remote: remote, command: "ls -lrt"
+                        }
+                    }
+                    stage('Put k8s-spring-boot-deployment.yaml onto k8smaster') {
+                        sshPut remote: remote, from: 'deployment.yaml', into: '.'
+                        }
+                    stage('Deploy spring boot') {
+                        sshCommand remote: remote, command: "kubectl apply -f deployment.yaml"
+                        }
+
+         
+                }
         
-        stage('Put k8s-spring-boot-deployment.yml onto k8smaster') {
-            sshPut remote: remote, from: 'deployment.yaml', into: '.'
-            }
-        stage('Deploy spring boot') {
-          sshCommand remote: remote, command: "kubectl apply -f deployment.yaml"
-            }
-        }   
+        
+           
     }
        
 }

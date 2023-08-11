@@ -56,27 +56,27 @@ pipeline{
                 
             }
             */
-        
-                node {
+        stage("SSH Into k8s Server") {
+                steps {
                     def remote = [:]
                     remote.name = 'k8s'
                     remote.host = 'kubemaster1'
                     remote.user = 'root'
                     remote.password = 'redhat'
                     remote.allowAnyHosts = true
-                    stage('Remote SSH') {
+                    script('Remote SSH') {
                         sshCommand remote: remote, command: "ls -lrt"
                         }
                     }
-                    stage('Put k8s-spring-boot-deployment.yaml onto k8smaster') {
+                    script('Put k8s-spring-boot-deployment.yaml onto k8smaster') {
                         sshPut remote: remote, from: 'deployment.yaml', into: '.'
                         }
-                    stage('Deploy spring boot') {
+                    script('Deploy spring boot') {
                         sshCommand remote: remote, command: "kubectl apply -f deployment.yaml"
                         }
 
          
-                
+                }
         
         
            

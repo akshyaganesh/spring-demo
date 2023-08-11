@@ -2,13 +2,8 @@ pipeline{
     agent any
     environment {
         PATH = "$PATH:/opt/apache-maven-4.0.0-alpha-7/bin"
-
-        NEXUS_VERSION = "nexus3"
-        NEXUS_PROTOCOL = "http"
-        NEXUS_URL = "192.168.1.27:8081"
-        NEXUS_REPOSITORY = "maven-central"
-        NEXUS_CREDENTIAL_ID = "Nexus_CRED"
-    }
+   
+        }
     stages{
        stage('GetCode'){
             steps{
@@ -61,23 +56,22 @@ pipeline{
                 
             }
             */
-        stage("Publish to Nexus Repository Manager") {
-            steps {
-                script {
-                    
-                        nexusArtifactUploader(
-                            nexusVersion: NEXUS_VERSION,
-                            protocol: NEXUS_PROTOCOL,
-                            nexusUrl: NEXUS_URL,
-                            repository: NEXUS_REPOSITORY,
-                            credentialsId: NEXUS_CREDENTIAL_ID,
-
-                        );
-
-                }
+        stage("SSH Into k8s Server") {
+                def remote = [:]
+                remote.name = 'kubemaster1'
+                remote.host = '192.168.1.20'
+                remote.user = 'root'
+                remote.password = 'redhat'
+                remote.allowAnyHosts = true
+        
+        stage('Put k8s-spring-boot-deployment.yml onto k8smaster') {
+            sshPut remote: remote, from: 'deployment.yaml', into: '.'
             }
-        }
-        }
-       
+        stage('Deploy spring boot') {
+          sshCommand remote: remote, command: "kubectl apply -f deployment.yaml"
+            }
+        }   
     }
+       
+}
 

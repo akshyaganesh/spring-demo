@@ -1,18 +1,34 @@
-pipeline{
-    agent any
+node {
+    println("Get code from Git repo..")
+    //checkout scm
+    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/akshyaganesh/spring-demo.git']])
+}
+
+pipeline {
+    agent {
+        label "linux"
+    }
+
+    options {
+        disableConcurrentBuilds()
+    }
+
+//pipeline{
+  //  agent any
     environment {
         PATH = "$PATH:/opt/apache-maven-4.0.0-alpha-7/bin"
         
         }
     stages{
-       stage('GetCode'){
-            steps{
+      
+       //stage('GetCode'){
+            //steps{
                 // git 'https://github.com/akshyaganesh/hello-world.git'
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/akshyaganesh/spring-demo.git']])
-            }
-         } 
-
-       /*
+                //checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/akshyaganesh/spring-demo.git']])
+               //     }  
+                //} 
+      
+        /*
         stage('SonarQube analysis') {
             //    def scannerHome = tool 'SonarScanner 4.0';
             steps{
@@ -24,7 +40,7 @@ pipeline{
                 }
             }
          }
-       */
+      */
        stage('Build'){
             steps{
                 sh 'mvn clean package'
@@ -58,27 +74,25 @@ pipeline{
             */
         stage("SSH Into k8s Server") {
                 steps{
-                       node{ def remote = [:]
-                        remote.name = 'k8s'
-                        remote.host = 'kubemaster1'
-                        remote.user = 'root'
-                        remote.password = 'redhat'
-                        remote.allowAnyHosts = true  
-                       }
-                    script('Remote SSH') {
-                        sshCommand remote: remote, command: "ls -lrt"
+                    script {
+                        sshagent(credentials : ['kubermaster1']) {
+                        sh 'ssh -o StrictHostKeyChecking=no root@192.168.1.20 uptime'
+                        sh 'ssh -v root@192.168.1.20'
                         }
-                    }
-                steps('Put k8s-spring-boot-deployment.yaml onto k8smaster') {
-                    sshPut remote: remote, from: 'deployment.yaml', into: '.'
-                    }
-                steps('Deploy spring boot') {
-                    sshCommand remote: remote, command: "kubectl apply -f deployment.yaml"
-                    }
+                    } 
+                } 
             }
+        stage('Put k8s-spring-boot-deployment.yaml onto k8smaster') {
+            sshPut remote: remote, from: 'deployment.yaml', into: '.'
+            }
+        stage('Deploy spring boot') {
+            sshCommand remote: remote, command: "kubectl apply -f deployment.yaml"
+            }
+            
 
            
-    }
+        
        
+    }
 }
 

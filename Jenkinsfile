@@ -5,15 +5,15 @@ node {
 }
 
 pipeline {
-    agent {
-        label "linux"
-    }
+    //agent {
+      //  label "linux"
+    //}
 
     options {
         disableConcurrentBuilds()
     }
 
-//pipeline{
+//ipeline{
   //  agent any
     environment {
         PATH = "$PATH:/opt/apache-maven-4.0.0-alpha-7/bin"

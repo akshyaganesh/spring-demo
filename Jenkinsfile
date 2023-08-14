@@ -2,7 +2,14 @@ pipeline{
     agent any
     environment {
         PATH = "$PATH:/opt/apache-maven-4.0.0-alpha-7/bin"
-        
+        /*
+        remoteCommands =
+        """
+        ls -ltr /usr/bin/;
+        ls -ltr;
+        scp root@192.168.1.25:/var/lib/jenkins/workspace/spring-demo/deployment.yaml .
+        """
+        */
         }
     stages{
       
@@ -66,31 +73,22 @@ pipeline{
             */
         stage("SSH Into k8s Server") {
                 steps{
-                         withCredentials([usernamePassword(credentialsId: 'kubemaster1', passwordVariable: 'redhat', usernameVariable: 'root')]) {
-                        sh 'ssh root@192.168.1.20 uptime'
+                       
+                    script {
+                        sshagent(credentials : ['kubemaster-sshagent']) {
+			            //sh 'ssh -tt root@192.168.1.20 $remoteCommands'
+                        sh """ssh -tt root@192.168.1.20 << EOF
+                        scp root@192.168.1.25:/var/lib/jenkins/workspace/spring-demo/deployment.yaml .
+                        kubectl apply -f deployment.yaml
+                        exit
+                        EOF"""
                         }
-                    } 
+                    }
+
                 } 
+            } 
                         
-        stage('Put k8s-spring-boot-deployment.yaml onto k8smaster') {
-            steps{
-                         withCredentials([usernamePassword(credentialsId: 'kubemaster1', passwordVariable: 'redhat', usernameVariable: 'root')]) {
-                        sh 'ssh root@192.168.1.20 uptime'
-                        sshPut remote: remote, from: 'deployment.yaml', into: '.'
-                        }
-                    } 
-            
-            }
-        stage('Deploy spring boot') {
-            steps{
-                         withCredentials([usernamePassword(credentialsId: 'kubemaster1', passwordVariable: 'redhat', usernameVariable: 'root')]) {
-                        sh 'ssh root@192.168.1.20 uptime'
-                         sshCommand remote: remote, command: "kubectl apply -f deployment.yaml"
-                        }
-                    } 
-           
-            }
-          
+
 
            
         

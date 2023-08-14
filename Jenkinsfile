@@ -71,15 +71,14 @@ pipeline{
                 
             }
             */
-        stage("SSH Into k8s Server") {
+        stage("connecting to Kubernetes Master") {
                 steps{
                        
                     script {
                         sshagent(credentials : ['kubemaster-sshagent']) {
 			            //sh 'ssh -tt root@192.168.1.20 $remoteCommands'
                         sh """ssh -tt root@192.168.1.20 << EOF
-                        scp root@192.168.1.25:/var/lib/jenkins/workspace/spring-demo/deployment.yaml .
-                        kubectl apply -f deployment.yaml
+                        date
                         exit
                         EOF"""
                         }
@@ -87,7 +86,34 @@ pipeline{
 
                 } 
             } 
-                        
+        stage("Copying Deployment File into Kubernetes Master") {
+                steps{
+                       
+                    script {
+                        sshagent(credentials : ['kubemaster-sshagent']) {
+                        sh """ssh -tt root@192.168.1.20 << EOF
+                        scp root@192.168.1.25:/var/lib/jenkins/workspace/spring-demo/deployment.yaml .
+                        exit
+                        EOF"""
+                        }
+                    }
+
+                } 
+            } 
+        stage("Creating Container in Kubernetes Cluster") {
+                steps{
+                       
+                    script {
+                        sshagent(credentials : ['kubemaster-sshagent']) {
+                        sh """ssh -tt root@192.168.1.20 << EOF
+                        kubectl apply -f deployment.yaml
+                        exit
+                        EOF"""
+                        }
+                    }
+
+                } 
+            }                        
 
 
            

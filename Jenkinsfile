@@ -42,7 +42,7 @@ pipeline{
         stage('Build docker image'){
             steps{
                 script{
-                    //sh 'chmod 666 /var/run/docker.sock'
+                    sh 'chmod 666 /var/run/docker.sock'
                     sh 'docker build -t hello-world .'
                 }
             }
@@ -74,7 +74,7 @@ pipeline{
          /*               
         stage('Put k8s-spring-boot-deployment.yaml onto k8smaster') {
 
-            sshPut (remote: remote, from: 'deployment.yaml', into: '.')
+            sshPut remote: remote, from: 'deployment.yaml', into: '.'
             }
         stage('Deploy spring boot') {
             sshCommand (remote: remote, command: "kubectl apply -f deployment.yaml")

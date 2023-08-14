@@ -71,15 +71,26 @@ pipeline{
                         }
                     } 
                 } 
-         /*               
+                        
         stage('Put k8s-spring-boot-deployment.yaml onto k8smaster') {
-
-            sshPut remote: remote, from: 'deployment.yaml', into: '.'
+            steps{
+                         withCredentials([usernamePassword(credentialsId: 'kubemaster1', passwordVariable: 'redhat', usernameVariable: 'root')]) {
+                        sh 'ssh root@192.168.1.20 uptime'
+                        sshPut remote: remote, from: 'deployment.yaml', into: '.'
+                        }
+                    } 
+            
             }
         stage('Deploy spring boot') {
-            sshCommand (remote: remote, command: "kubectl apply -f deployment.yaml")
+            steps{
+                         withCredentials([usernamePassword(credentialsId: 'kubemaster1', passwordVariable: 'redhat', usernameVariable: 'root')]) {
+                        sh 'ssh root@192.168.1.20 uptime'
+                         sshCommand remote: remote, command: "kubectl apply -f deployment.yaml"
+                        }
+                    } 
+           
             }
-         */   
+          
 
            
         

@@ -83,6 +83,7 @@ pipeline{
                     version: 'SNAPSHOT-1'
             }
         }
+        /*
         stage("connecting to Kubernetes Master") {
                 steps{
                        
@@ -125,7 +126,8 @@ pipeline{
                     }
 
                 } 
-            }                        
+            }  */
+                          
 
 
            

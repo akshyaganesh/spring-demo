@@ -13,7 +13,7 @@ pipeline{
         }
     stages{
       
-       stage('GetCode'){
+       stage('Get Code from Git Hub'){
             steps{
                 git 'https://github.com/akshyaganesh/hello-world.git'
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/akshyaganesh/spring-demo.git']])
@@ -33,13 +33,9 @@ pipeline{
                 sh 'sonar-scanner'
                 }
             }
-         }
-         stage('Nexus packaging') {
-            steps {
-                echo 'Storing artifact (nexus3)...'
-                sh 'mvn clean package -Dmaven.test.skip=true deploy:deploy-file -DgroupId=tn.esprit.spring -DartifactId=timesheet-devops -Dversion=1.0 -DgeneratePom=true -Dpackaging=jar  -DrepositoryId=sonartypeNexusRepo -Durl=http://nexus-service:8081/repository/maven-releases/ -Dfile=target/timesheet-devops-1.0.jar'
-            }
-      */
+         } */
+        
+      
        stage('Build'){
             steps{
                 sh 'mvn clean package'
@@ -71,6 +67,22 @@ pipeline{
                 
             }
             */
+        stage('Push the Image to Nexus Repo') {
+            steps {
+                echo 'Storing artifact to Nexus Repository'
+                nexusArtifactUploader artifacts: [
+                    [artifactId: 'demo', classifier: '', file: 'target/demo-SNAPSHOT-1.war', type: 'war'
+                    ]
+                ], 
+                    credentialsId: 'Nexus_CRED', 
+                    groupId: 'com.example', 
+                    nexusUrl: '192.168.1.27:8081', 
+                    nexusVersion: 'nexus3', 
+                    protocol: 'http', 
+                    repository: 'http://192.168.1.27:8081/repository/maven-central/', 
+                    version: 'SNAPSHOT-1'
+            }
+        }
         stage("connecting to Kubernetes Master") {
                 steps{
                        

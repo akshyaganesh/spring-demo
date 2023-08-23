@@ -79,7 +79,7 @@ pipeline{
                     nexusUrl: '192.168.1.27:8081', 
                     nexusVersion: 'nexus3', 
                     protocol: 'http', 
-                    repository: 'http://192.168.1.27:8081/repository/maven-central/', 
+                    repository: 'repository/maven-central', 
                     version: 'SNAPSHOT-1'
             }
         }

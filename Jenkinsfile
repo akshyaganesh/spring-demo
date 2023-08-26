@@ -50,7 +50,7 @@ pipeline{
                 }
             }
         }
-        
+        /*
         stage('Push image to Hub'){
             steps{
                 script{
@@ -66,7 +66,7 @@ pipeline{
                 }
                 
             }
-         /*   
+           
         stage('Push the Image to Nexus Repo') {
             steps {
                 echo 'Storing artifact to Nexus Repository'

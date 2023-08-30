@@ -20,20 +20,16 @@ pipeline{
                     }  
                 } 
       
-        /*
-        stage('SonarQube analysis') {
-            //    def scannerHome = tool 'SonarScanner 4.0';
-            steps{
 
-                withSonarQubeEnv('sonarqube-scanner') { 
-                //withSonarQubeEnv(credentialsId: 'sonar-token') {
-                 echo 'Running Sonar Test on Code Quality...'
-                sh 'mvn sonar:sonar -Dsonar.host.url=http://sonar-service:9000'  
-                //sh 'mvn sonar:sonar'
-                sh 'sonar-scanner'
-                }
+
+        stage('SonarQube Analysis') {
+        def mvn = tool 'Default Maven';
+            withSonarQubeEnv() {
+            //sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=spring-demo -Dsonar.projectName='spring-demo'"
+            sh "mvn clean verify sonar:sonar -Dsonar.projectKey=spring-demo -Dsonar.projectName='spring-demo'"
             }
-         } */
+        }
+
         
       
        stage('Build'){

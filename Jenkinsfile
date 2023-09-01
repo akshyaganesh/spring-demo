@@ -37,16 +37,16 @@ pipeline{
                 sh 'mvn clean package'
             }
          }
-         
+          /*
         stage('Build docker image'){
             steps{
                 script{
-                    //sh 'chmod 666 /var/run/docker.sock'
+                    //sh 'chmod 777 /var/run/docker.sock'
                     sh 'docker build -t hello-world .'
                 }
             }
         }
-        /*
+       
         stage('Push image to Hub'){
             steps{
                 script{
@@ -79,7 +79,7 @@ pipeline{
                     version: 'SNAPSHOT-1'
             }
         }
-        */
+        
         stage("connecting to Kubernetes Master") {
                 steps{
                        
@@ -123,7 +123,7 @@ pipeline{
 
                 } 
             }  
-                          
+              */            
 
 
            

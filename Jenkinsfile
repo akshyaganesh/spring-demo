@@ -24,10 +24,10 @@ pipeline{
 
         stage('SonarQube Analysis') {
             //def mvn = tool 'Default Maven';
-            withSonarQubeEnv() {
+            //withSonarQubeEnv() {
             //sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=spring-demo -Dsonar.projectName='spring-demo'"
             sh "mvn sonar:sonar -Dsonar.projectKey=spring-demo -Dsonar.projectName='spring-demo'"
-            }
+            //}
         }
 
         

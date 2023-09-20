@@ -24,7 +24,7 @@ pipeline{
 
         stage('SonarQube Analysis') {
            mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=spring-demo \
+            -Dsonar.projectKey='spring-demo' \
             -Dsonar.projectName='spring-demo' \
             -Dsonar.host.url='http://192.168.1.26:9000' \
             -Dsonar.token='sqp_7c4afee3472c1d04c95a8198aec86287070408c7'

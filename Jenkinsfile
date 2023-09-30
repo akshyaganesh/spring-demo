@@ -19,18 +19,14 @@ pipeline{
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/akshyaganesh/spring-demo.git']])
                     }  
                 } 
-      
 
-
-        stage('SonarQube Analysis') {
-           mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=springdemo \
-            -Dsonar.projectName='springdemo' \
-            -Dsonar.host.url='http://192.168.1.26:9000' \
-            -Dsonar.token='squ_cd9696fc71cd308009c9b61a33fb4e0da2661273'
+   stage('SonarQube analysis') {
+            steps {
+                withSonarQubeEnv(credentialsId: 'springdemo', installationName: 'sonar-server') { // You can override the credential to be used
+                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                }
+            }
         }
-
-        
       
        stage('Build'){
             steps{

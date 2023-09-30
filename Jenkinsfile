@@ -20,19 +20,20 @@ pipeline{
                     }  
                 } 
 
-   stage('SonarQube analysis') {
-            steps {
-                withSonarQubeEnv(credentialsId: 'springdemo', installationName: 'sonar-server') { // You can override the credential to be used
-                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-                }
-            }
+        stage('Build'){
+        steps{
+            sh 'mvn clean package'
         }
+        }
+        stage('SonarQube analysis') {
+                    steps {
+                        withSonarQubeEnv(credentialsId: 'springdemo', installationName: 'sonar-server') { // You can override the credential to be used
+                        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                        }
+                    }
+                }
       
-       stage('Build'){
-            steps{
-                sh 'mvn clean package'
-            }
-         }
+
           /*
         stage('Build docker image'){
             steps{
